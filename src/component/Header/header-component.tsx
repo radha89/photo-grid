@@ -2,8 +2,8 @@ import React from "react";
 
 export const HeaderComponent = () => {
   return (
-    <div>
-      <h1>Header component</h1>
+    <div className="header">
+      <h1 className="header-title">Header component</h1>
     </div>
   );
 };
