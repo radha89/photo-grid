@@ -1,6 +1,6 @@
 import React from "react";
 import { HeaderComponent } from "./component/Header/header-component";
-import { PhotoGrid } from "./component/Photo-Grid/photo-grid";
+import { PhotoGrid } from "./component/Photo-Grid/photo-grid.component";
 
 function App() {
   return (
