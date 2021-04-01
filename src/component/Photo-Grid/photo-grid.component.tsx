@@ -1,27 +1,32 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { unsplashApi } from "../../api/api-connect";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { PhotoDetails } from "../Photo-Details/photo-details.component";
+import { Carousel } from "../Carousel/carousel.component";
 
 export const PhotoGrid = () => {
   const [photoList, setPhotoList] = useState<any>([]); // TODO: avoid any type
   const [counter, setCounter] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const showModal = () => {
-    setIsModalOpen(true);
+    setIsOpen(true);
   };
   const hideModal = () => {
-    setIsModalOpen(false);
+    setIsOpen(false);
   };
 
   const previous = () => setCurrentIndex(currentIndex - 1);
 
-  const next = () => setCurrentIndex(currentIndex + 1);
+  const next = () => {
+    setCurrentIndex(currentIndex + 1);
+    if (currentIndex === photoList.length - 2) {
+      fetchPhotos();
+    }
+  };
 
   const fetchPhotos = () => {
-    unsplashApi.photos.list({ page: counter, perPage: 5 }).then((result) => {
+    unsplashApi.photos.list({ page: counter, perPage: 10 }).then((result) => {
       setCounter(counter + 1);
 
       if (result.errors) {
@@ -41,6 +46,7 @@ export const PhotoGrid = () => {
 
   // TODO: define photo details type
   const fetchPhotoDetails = (photoObj: any) => {
+    console.log(photoObj);
     const index: number = photoList.indexOf(photoObj);
     setCurrentIndex(index);
   };
@@ -58,19 +64,20 @@ export const PhotoGrid = () => {
             dataLength={photoList.length} // This is important field to render the next data
             next={fetchPhotos}
             //  Test with results set of 30 images for prototyping stage
-            hasMore={photoList.length < 10} // TODO: Need to set to true before submission?
+            hasMore={photoList.length < 100} // TODO: Need to set to true before submission?
             loader={<h4>Loading...</h4>}
-            endMessage={
-              <div>
-                <p
-                  style={{
-                    textAlign: "center"
-                  }}
-                >
-                  <b>Yay! You have seen it all</b>
-                </p>
-              </div>
-            }
+            // TODO: evaluate if this is necessary
+            // endMessage={
+            //   <div>
+            //     <p
+            //       style={{
+            //         textAlign: "center"
+            //       }}
+            //     >
+            //       <b>Yay! You have seen it all</b>
+            //     </p>
+            //   </div>
+            // }
           >
             {photoList.map((photo: any, i: number) => {
               return (
@@ -87,16 +94,15 @@ export const PhotoGrid = () => {
                 </div>
               );
             })}
-            {isModalOpen && (
-              <PhotoDetails
-                show={isModalOpen}
-                previewData={photoList[currentIndex]}
+            {isOpen && (
+              <Carousel
+                show={isOpen}
                 currentIndex={currentIndex}
                 photoList={photoList}
                 handleClose={hideModal}
                 previous={previous}
                 next={next}
-              ></PhotoDetails>
+              ></Carousel>
             )}
           </InfiniteScroll>
         )}
