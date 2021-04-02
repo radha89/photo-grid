@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import moment from "moment";
 
 export const Carousel = (props: any) => {
   const { show, currentIndex, photoList, previous, next, handleClose } = props;
@@ -7,58 +8,37 @@ export const Carousel = (props: any) => {
 
   return (
     <div className={showHideClassName}>
-      <section className="modal-main">
+      <div className="modal-main">
         {currentIndex !== 0 && (
           <div className="modal-main-previous">
-            <button onClick={previous}>Previous</button>
+            <div onClick={previous}>&#60;</div>
           </div>
         )}
-        <div className="modal-main-group">
-          {currentIndex > 0 && (
-            <div className="modal-main-photo" onClick={previous}>
-              <img
-                className="modal-main-photo-previous"
-                src={photoList[currentIndex - 1].urls.thumb}
-                alt=""
-              ></img>
-            </div>
-          )}
-          <div className="modal-main-photo">
-            <img
-              className="modal-main-photo-current"
-              src={previewData.urls.small}
-              alt=""
-            ></img>
+        {currentIndex !== photoList.length - 1 && (
+          <div className="modal-main-next">
+            <div onClick={next}>&#62;</div>
           </div>
-          {currentIndex < photoList.length - 1 && (
-            <div className="modal-main-photo" onClick={next}>
-              <img
-                className="modal-main-photo-next"
-                src={photoList[currentIndex + 1].urls.thumb}
-                alt=""
-              ></img>
-            </div>
-          )}
+        )}
+        <div className="modal-main-close">
+          <p>X</p>
+        </div>
+
+        <div className="modal-main-photo">
+          <img
+            className="modal-main-photo-current"
+            src={previewData.urls.regular}
+            alt=""
+          ></img>
         </div>
         <div className="modal-main-photoDetails">
-          <p>
-            Description:{" "}
-            {previewData.description
-              ? previewData.description
-              : "A generic photo"}
-          </p>
           <p>Name: {previewData.user.name}</p>
           <p>Username: {previewData.user.username}</p>
           <p>Likes: {previewData.likes}</p>
-          <p>Created at: {previewData.created_at}</p>
+          <p>
+            Created at: {moment(previewData.created_at).format("MMM DD YYYY")}
+          </p>
         </div>
-        {currentIndex !== photoList.length - 1 && (
-          <div className="modal-main-next">
-            <button onClick={next}>Next</button>
-          </div>
-        )}
-        <button onClick={handleClose}>X</button>
-      </section>
+      </div>
     </div>
   );
 };

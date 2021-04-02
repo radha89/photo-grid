@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { unsplashApi } from "../../api/api-connect";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Carousel } from "../Carousel/carousel.component";
