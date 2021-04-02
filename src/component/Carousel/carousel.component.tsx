@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import moment from "moment";
 
 export const Carousel = (props: any) => {
@@ -19,7 +19,7 @@ export const Carousel = (props: any) => {
             <div onClick={next}>&#62;</div>
           </div>
         )}
-        <div className="modal-main-close">
+        <div onClick={handleClose} className="modal-main-close">
           <p>X</p>
         </div>
 

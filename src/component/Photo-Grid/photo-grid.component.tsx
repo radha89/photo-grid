@@ -9,11 +9,16 @@ export const PhotoGrid = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
+  const imageRef = useRef<any>();
+
   const showModal = () => {
     setIsOpen(true);
   };
   const hideModal = () => {
     setIsOpen(false);
+    if (imageRef) {
+      imageRef["current"].scrollIntoView();
+    }
   };
 
   const previous = () => setCurrentIndex(currentIndex - 1);
@@ -46,7 +51,6 @@ export const PhotoGrid = () => {
 
   // TODO: define photo details type
   const fetchPhotoDetails = (photoObj: any) => {
-    console.log(photoObj);
     const index: number = photoList.indexOf(photoObj);
     setCurrentIndex(index);
   };
@@ -61,7 +65,7 @@ export const PhotoGrid = () => {
         {photoList && photoList.length > 0 && (
           <InfiniteScroll
             className="photoGrid-row"
-            dataLength={photoList.length} // This is important field to render the next data
+            dataLength={photoList.length}
             next={fetchPhotos}
             //  Test with results set of 30 images for prototyping stage
             hasMore={photoList.length < 100} // TODO: Need to set to true before submission?
@@ -87,6 +91,7 @@ export const PhotoGrid = () => {
                   onClick={() => fetchPhotoDetails(photo)}
                 >
                   <img
+                    ref={imageRef}
                     alt={photo.urls.small}
                     src={photo.urls.small}
                     onClick={showModal}
