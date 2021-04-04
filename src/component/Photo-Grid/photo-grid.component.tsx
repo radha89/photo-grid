@@ -3,6 +3,7 @@ import { unsplashApi } from "../../api/api-connect";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Carousel } from "../Carousel/carousel.component";
 import { useMountEffect } from "../../mount-hook";
+import { Loader } from "../Loader/loader-component";
 
 export const PhotoGrid = () => {
   const [photoList, setPhotoList] = useState<any>([]); // TODO: avoid any type
@@ -40,7 +41,7 @@ export const PhotoGrid = () => {
 
   const fetchPhotos = () => {
     unsplashApi.photos
-      .list({ page: pageCounter, perPage: 10 })
+      .list({ page: pageCounter, perPage: 13 })
       .then((result) => {
         setPageCounter(pageCounter + 1);
 
@@ -84,7 +85,7 @@ export const PhotoGrid = () => {
             dataLength={photoList.length}
             next={fetchPhotos}
             hasMore={true}
-            loader={<h4>Loading...</h4>}
+            loader={<Loader />}
             scrollableTarget="scrollableDiv"
           >
             {photoList.map((photo: any, i: number) => {

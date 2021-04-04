@@ -1,7 +1,8 @@
 .photoGrid {
   border: 2px solid $clr-off-white;
   border-radius: 1px;
-  margin: 80px;
+  margin: 0 auto;
+  width: 80%;
 
   &-row {
     display: flex;
