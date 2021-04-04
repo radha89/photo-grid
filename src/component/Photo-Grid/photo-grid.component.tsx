@@ -1,29 +1,37 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { unsplashApi } from "../../api/api-connect";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Carousel } from "../Carousel/carousel.component";
+import { useMountEffect } from "../../mount-hook";
 
 export const PhotoGrid = () => {
   const [photoList, setPhotoList] = useState<any>([]); // TODO: avoid any type
-  const [counter, setCounter] = useState<number>(1);
+  const [pageCounter, setPageCounter] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
-  const imageRef = useRef<any>();
+  const imageRefs = useRef<any>([]);
 
   const showModal = () => {
     setIsOpen(true);
   };
   const hideModal = () => {
     setIsOpen(false);
-    if (imageRef) {
-      imageRef["current"].scrollIntoView();
+    if (imageRefs) {
+      const imageRef = imageRefs.current.find(
+        (img: HTMLImageElement) => parseInt(img.id) === currentIndex
+      );
+      if (imageRef) {
+        imageRef.scrollIntoView();
+      }
     }
   };
 
-  const previous = () => setCurrentIndex(currentIndex - 1);
+  const handlePrevious = () => {
+    setCurrentIndex(currentIndex - 1);
+  };
 
-  const next = () => {
+  const handleNext = () => {
     setCurrentIndex(currentIndex + 1);
     if (currentIndex === photoList.length - 2) {
       fetchPhotos();
@@ -31,22 +39,25 @@ export const PhotoGrid = () => {
   };
 
   const fetchPhotos = () => {
-    unsplashApi.photos.list({ page: counter, perPage: 10 }).then((result) => {
-      setCounter(counter + 1);
+    unsplashApi.photos
+      .list({ page: pageCounter, perPage: 10 })
+      .then((result) => {
+        setPageCounter(pageCounter + 1);
 
-      if (result.errors) {
-        console.log("error.occurred: ", result.errors[0]);
-      } else {
-        const feed = result.response;
+        if (result.errors) {
+          console.log("error.occurred: ", result.errors[0]);
+        } else {
+          const feed = result.response;
 
-        const { total, results } = feed;
+          const { total, results } = feed;
 
-        console.log(`received ${results.length} photos out of ${total}`);
-        console.log("first photo: ", results[0].urls.full);
+          console.log(`received ${results.length} photos out of ${total}`);
+          console.log("first photo: ", results[0].urls.full);
 
-        setPhotoList(photoList.concat(results));
-      }
-    });
+          setPhotoList(photoList.concat(results));
+          console.log(pageCounter);
+        }
+      });
   };
 
   // TODO: define photo details type
@@ -55,35 +66,29 @@ export const PhotoGrid = () => {
     setCurrentIndex(index);
   };
 
-  useEffect(() => {
-    fetchPhotos();
-  }, []);
+  useMountEffect(fetchPhotos);
 
   return (
     <div className="photoGrid">
-      <div className="photoGrid-main-container">
+      <div
+        id="scrollableDiv"
+        style={{
+          height: "540px",
+          overflow: "auto"
+        }}
+        className="photoGrid-main-container"
+      >
         {photoList && photoList.length > 0 && (
           <InfiniteScroll
             className="photoGrid-row"
             dataLength={photoList.length}
             next={fetchPhotos}
-            //  Test with results set of 30 images for prototyping stage
-            hasMore={photoList.length < 100} // TODO: Need to set to true before submission?
+            hasMore={true}
             loader={<h4>Loading...</h4>}
-            // TODO: evaluate if this is necessary
-            // endMessage={
-            //   <div>
-            //     <p
-            //       style={{
-            //         textAlign: "center"
-            //       }}
-            //     >
-            //       <b>Yay! You have seen it all</b>
-            //     </p>
-            //   </div>
-            // }
+            scrollableTarget="scrollableDiv"
           >
             {photoList.map((photo: any, i: number) => {
+              // TODO: define photo type
               return (
                 <div
                   className="photoGrid-column"
@@ -91,7 +96,8 @@ export const PhotoGrid = () => {
                   onClick={() => fetchPhotoDetails(photo)}
                 >
                   <img
-                    ref={imageRef}
+                    id={`${i}`}
+                    ref={(el) => (imageRefs.current[i] = el)}
                     alt={photo.urls.small}
                     src={photo.urls.small}
                     onClick={showModal}
@@ -105,8 +111,8 @@ export const PhotoGrid = () => {
                 currentIndex={currentIndex}
                 photoList={photoList}
                 handleClose={hideModal}
-                previous={previous}
-                next={next}
+                handlePrevious={handlePrevious}
+                handleNext={handleNext}
               ></Carousel>
             )}
           </InfiniteScroll>

@@ -1,5 +1,6 @@
 .photoGrid {
-  border: 2px solid white;
+  border: 2px solid $clr-off-white;
+  border-radius: 1px;
   margin: 80px;
 
   &-row {
@@ -9,17 +10,24 @@
   }
 
   &-column {
-    flex: 20%;
+    flex: 10%;
     padding: 0 4px;
 
     img {
       display: block;
+      cursor: pointer;
       max-width: 350px;
       max-height: 180px;
       width: auto;
       height: auto;
       margin: 2% auto;
+      border: 3px solid $clr-off-white;
+      border-radius: 1px;
       box-shadow: 3px 3px 5px 6px rgba(148, 134, 134, 0.301);
+
+      &:hover {
+        border: 1px solid $clr-off-white;
+      }
     }
   }
 }

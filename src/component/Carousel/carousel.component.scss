@@ -9,10 +9,11 @@
   background: rgba(0, 0, 0, 0.6);
   color: black;
   z-index: 100;
+  overflow: scroll;
 
   &-main {
     position: fixed;
-    background-color: #56575a;
+    background-color: $clr-medium-grey;
     width: 100%;
     height: 100%;
     top: 50%;
@@ -22,13 +23,19 @@
 
     &-photo > img {
       max-width: 100%;
-      max-height: 600px;
+      max-height: 535px;
       object-fit: contain;
       border: yellow 2px solid;
     }
 
     &-photoDetails > p {
       text-align: left;
+    }
+
+    &-next,
+    &-previous,
+    &-close {
+      cursor: pointer;
     }
 
     &-close {

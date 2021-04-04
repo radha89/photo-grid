@@ -2,7 +2,14 @@ import React from "react";
 import moment from "moment";
 
 export const Carousel = (props: any) => {
-  const { show, currentIndex, photoList, previous, next, handleClose } = props;
+  const {
+    show,
+    currentIndex,
+    photoList,
+    handlePrevious,
+    handleNext,
+    handleClose
+  } = props;
   const showHideClassName = show ? "modal display-block" : "modal display-none";
   const previewData = photoList[currentIndex];
 
@@ -11,12 +18,12 @@ export const Carousel = (props: any) => {
       <div className="modal-main">
         {currentIndex !== 0 && (
           <div className="modal-main-previous">
-            <div onClick={previous}>&#60;</div>
+            <div onClick={handlePrevious}>&#60;</div>
           </div>
         )}
         {currentIndex !== photoList.length - 1 && (
           <div className="modal-main-next">
-            <div onClick={next}>&#62;</div>
+            <div onClick={handleNext}>&#62;</div>
           </div>
         )}
         <div onClick={handleClose} className="modal-main-close">
