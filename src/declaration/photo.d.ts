@@ -1,7 +1,7 @@
 export interface Photo {
   id: string;
   created_at?: string | null;
-  urls: ImageUrls[];
+  urls: ImageUrls;
   blur_hash?: string | null;
   liked_by_user?: boolean;
   likes?: number;

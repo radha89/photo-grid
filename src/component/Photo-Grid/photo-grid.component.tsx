@@ -84,7 +84,7 @@ export const PhotoGrid = () => {
             loader={<Loader />}
             scrollableTarget="scrollableDiv"
           >
-            {photoList.map((photo: any, i: number) => {
+            {photoList.map((photo: Photo, i: number) => {
               // TODO: define photo type
               return (
                 <div
