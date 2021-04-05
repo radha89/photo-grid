@@ -4,9 +4,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Carousel } from "../Carousel/carousel.component";
 import { useMountEffect } from "../../mount-hook";
 import { Loader } from "../Loader/loader-component";
+import { Error } from "../Error/error-component";
+// import { Photo } from "../../declaration/photo"; // TODO: import type declaration
 
 export const PhotoGrid = () => {
-  const [photoList, setPhotoList] = useState<any>([]); // TODO: avoid any type
+  const [photoList, setPhotoList] = useState<any[]>([]); // TODO: avoid any type
   const [pageCounter, setPageCounter] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -19,7 +21,7 @@ export const PhotoGrid = () => {
   const hideModal = () => {
     setIsOpen(false);
     if (imageRefs) {
-      const imageRef = imageRefs.current.find(
+      const imageRef: HTMLImageElement | null = imageRefs.current.find(
         (img: HTMLImageElement) => parseInt(img.id) === currentIndex
       );
       if (imageRef) {
@@ -79,7 +81,7 @@ export const PhotoGrid = () => {
         }}
         className="photoGrid-main-container"
       >
-        {photoList && photoList.length > 0 && (
+        {photoList && photoList.length > 0 ? (
           <InfiniteScroll
             className="photoGrid-row"
             dataLength={photoList.length}
@@ -117,6 +119,8 @@ export const PhotoGrid = () => {
               ></Carousel>
             )}
           </InfiniteScroll>
+        ) : (
+          <Error />
         )}
       </div>
     </div>
