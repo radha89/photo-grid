@@ -60,6 +60,11 @@
       }
     }
 
+    &-previous-hide,
+    &-next-hide {
+      visibility: hidden;
+    }
+
     &-next,
     &-previous {
       cursor: pointer;
@@ -80,7 +85,7 @@
     &-previous:hover,
     &-close:hover {
       div {
-        color: rgb(177, 181, 238);
+        color: $clr-light-purple;
       }
     }
   }

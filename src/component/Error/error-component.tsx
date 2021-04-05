@@ -1,5 +1,6 @@
 import React from "react";
 
-export const Error = () => {
-  return <h4 className="error">Oops nothing to see here...</h4>;
+export const Error = (prop: any) => {
+  const { message } = prop;
+  return <h4 className="error">There was an error {`${message}`}</h4>;
 };

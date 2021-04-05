@@ -5,10 +5,10 @@ import { Carousel } from "../Carousel/carousel.component";
 import { useMountEffect } from "../../mount-hook";
 import { Loader } from "../Loader/loader-component";
 import { Error } from "../Error/error-component";
-// import { Photo } from "../../declaration/photo"; // TODO: import type declaration
+import { Photo } from "../../declaration/photo";
 
 export const PhotoGrid = () => {
-  const [photoList, setPhotoList] = useState<any[]>([]); // TODO: avoid any type
+  const [photoList, setPhotoList] = useState<any[]>([]);
   const [pageCounter, setPageCounter] = useState<number>(1);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -43,7 +43,7 @@ export const PhotoGrid = () => {
 
   const fetchPhotos = () => {
     unsplashApi.photos
-      .list({ page: pageCounter, perPage: 13 })
+      .list({ page: pageCounter, perPage: 11 })
       .then((result) => {
         setPageCounter(pageCounter + 1);
 
@@ -51,20 +51,14 @@ export const PhotoGrid = () => {
           console.log("error.occurred: ", result.errors[0]);
         } else {
           const feed = result.response;
-
-          const { total, results } = feed;
-
-          console.log(`received ${results.length} photos out of ${total}`);
-          console.log("first photo: ", results[0].urls.full);
+          const { results } = feed;
 
           setPhotoList(photoList.concat(results));
-          console.log(pageCounter);
         }
       });
   };
 
-  // TODO: define photo details type
-  const fetchPhotoDetails = (photoObj: any) => {
+  const fetchPhotoDetails = (photoObj: Photo) => {
     const index: number = photoList.indexOf(photoObj);
     setCurrentIndex(index);
   };
@@ -100,7 +94,7 @@ export const PhotoGrid = () => {
                 >
                   <img
                     id={`${i}`}
-                    ref={(el) => (imageRefs.current[i] = el)}
+                    ref={(el: HTMLImageElement) => (imageRefs.current[i] = el)}
                     alt={photo.urls.small}
                     src={photo.urls.small}
                     onClick={showModal}
@@ -110,17 +104,17 @@ export const PhotoGrid = () => {
             })}
             {isOpen && (
               <Carousel
-                show={isOpen}
                 currentIndex={currentIndex}
                 photoList={photoList}
-                handleClose={hideModal}
+                show={isOpen}
                 handlePrevious={handlePrevious}
                 handleNext={handleNext}
+                handleClose={hideModal}
               ></Carousel>
             )}
           </InfiniteScroll>
         ) : (
-          <Error />
+          <Error message={"loading images"} />
         )}
       </div>
     </div>
