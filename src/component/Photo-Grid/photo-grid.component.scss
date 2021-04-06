@@ -2,6 +2,10 @@
   border-radius: 1.5px;
   margin: 0 auto;
   width: 80%;
+  // padding-top: 20vh;
+  // padding-bottom: 10vh;
+  // margin-top: 1vh;
+  // margin-bottom: 2vh;
 
   &-main-container {
     scroll-behavior: smooth;
@@ -18,7 +22,7 @@
       cursor: pointer;
       max-width: 450px;
       max-height: 200px;
-      margin: 2% auto;
+      margin: 2vh auto;
       border: 3px solid $clr-off-white;
       border-radius: 1.5px;
       box-shadow: 3px 3px rgba(148, 134, 134, 0.301);

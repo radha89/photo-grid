@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { unsplashApi } from "../../api/api-connect";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Carousel } from "../Carousel/carousel.component";
+import { ImageSlider } from "../Image-Slider/image-slider.component";
 import { useMountEffect } from "../../mount-hook";
 import { Loader } from "../Loader/loader-component";
 import { Error } from "../Error/error-component";
@@ -15,32 +15,47 @@ export const PhotoGrid = () => {
 
   const imageRefs = useRef<any>([]);
 
-  const showModal = () => {
+  // Open slider and set current position when image is selected
+  const showImageSlider = (index: number) => (
+    e: React.MouseEvent<HTMLElement>
+  ) => {
+    setCurrentIndex(index);
     setIsOpen(true);
   };
-  const hideModal = () => {
+
+  // Hide slider
+  const hideImageSlider = () => {
     setIsOpen(false);
+
+    // find current image position with element id from grid
     if (imageRefs) {
       const imageRef: HTMLImageElement | null = imageRefs.current.find(
         (img: HTMLImageElement) => parseInt(img.id) === currentIndex
       );
+
+      // scroll to matching element in grid
       if (imageRef) {
         imageRef.scrollIntoView();
       }
     }
   };
 
+  // Decrement current position and navigate to previous image
   const handlePrevious = () => {
     setCurrentIndex(currentIndex - 1);
   };
 
+  // Increment current position and nevigate to next image
   const handleNext = () => {
     setCurrentIndex(currentIndex + 1);
+
+    // Fetch more photos when approaching end of photoList
     if (currentIndex === photoList.length - 2) {
       fetchPhotos();
     }
   };
 
+  // Call to Unsplash api
   const fetchPhotos = () => {
     unsplashApi.photos
       .list({ page: pageCounter, perPage: 11 })
@@ -58,11 +73,7 @@ export const PhotoGrid = () => {
       });
   };
 
-  const fetchPhotoDetails = (photoObj: Photo) => {
-    const index: number = photoList.indexOf(photoObj);
-    setCurrentIndex(index);
-  };
-
+  // Fetch photos on mount
   useMountEffect(fetchPhotos);
 
   return (
@@ -70,7 +81,7 @@ export const PhotoGrid = () => {
       <div
         id="scrollableDiv"
         style={{
-          height: "540px",
+          height: "76vh",
           overflow: "auto"
         }}
         className="photoGrid-main-container"
@@ -80,37 +91,32 @@ export const PhotoGrid = () => {
             className="photoGrid-row"
             dataLength={photoList.length}
             next={fetchPhotos}
-            hasMore={true}
+            hasMore={photoList.length < 1000}
             loader={<Loader />}
             scrollableTarget="scrollableDiv"
           >
             {photoList.map((photo: Photo, i: number) => {
-              // TODO: define photo type
               return (
-                <div
-                  className="photoGrid-column"
-                  key={i}
-                  onClick={() => fetchPhotoDetails(photo)}
-                >
+                <div className="photoGrid-column" key={i}>
                   <img
                     id={`${i}`}
                     ref={(el: HTMLImageElement) => (imageRefs.current[i] = el)}
                     alt={photo.urls.small}
                     src={photo.urls.small}
-                    onClick={showModal}
+                    onClick={showImageSlider(i)}
                   ></img>
                 </div>
               );
             })}
             {isOpen && (
-              <Carousel
+              <ImageSlider
                 currentIndex={currentIndex}
                 photoList={photoList}
                 show={isOpen}
                 handlePrevious={handlePrevious}
                 handleNext={handleNext}
-                handleClose={hideModal}
-              ></Carousel>
+                handleClose={hideImageSlider}
+              ></ImageSlider>
             )}
           </InfiniteScroll>
         ) : (

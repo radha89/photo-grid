@@ -1,10 +1,10 @@
 import React from "react";
 import moment from "moment";
 import { Error } from "../Error/error-component";
-import { CarouselProps } from "../../declaration/carousel-props";
+import { ImageSliderProps } from "../../declaration/image-slider-props";
 import { Photo } from "../../declaration/photo";
 
-export const Carousel = (props: CarouselProps) => {
+export const ImageSlider = (props: ImageSliderProps) => {
   const {
     show,
     handlePrevious,
@@ -13,9 +13,11 @@ export const Carousel = (props: CarouselProps) => {
     currentIndex,
     photoList
   } = props;
+
   const showHideClassName: string = show
     ? "modal display-block"
     : "modal display-none";
+
   const previewData: Photo | any = photoList[currentIndex]
     ? photoList[currentIndex]
     : null;

@@ -1,6 +1,6 @@
 import Photo from "./photo.d.ts";
 
-export interface CarouselProps {
+export interface ImageSliderProps {
   currentIndex: number;
   photoList: Photo[];
   show: any;
