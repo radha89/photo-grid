@@ -7,13 +7,13 @@
     scroll-behavior: smooth;
   }
 
-  &-row {
+  &-wrapper {
     display: grid;
     grid-gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 
-  &-column {
+  &-content {
     img {
       cursor: pointer;
       max-width: 450px;
