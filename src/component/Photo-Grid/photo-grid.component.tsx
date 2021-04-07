@@ -88,7 +88,7 @@ export const PhotoGrid = () => {
       >
         {photoList && photoList.length > 0 ? (
           <InfiniteScroll
-            className="photoGrid-row"
+            className="photoGrid-wrapper"
             dataLength={photoList.length}
             next={fetchPhotos}
             hasMore={photoList.length < 1000}
@@ -97,7 +97,7 @@ export const PhotoGrid = () => {
           >
             {photoList.map((photo: Photo, i: number) => {
               return (
-                <div className="photoGrid-column" key={i}>
+                <div className="photoGrid-content" key={i}>
                   <img
                     id={`${i}`}
                     ref={(el: HTMLImageElement) => (imageRefs.current[i] = el)}
