@@ -1,61 +1,61 @@
 .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background: rgba(0, 0, 0, 0.6);
   color: black;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+
   z-index: 100;
   overflow: auto;
 
   &-main {
-    position: fixed;
     background-color: $clr-medium-grey;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    overflow: auto;
-
-    &-close {
-      grid-column: 1 / 4 span;
-      padding-top: 20px;
-      text-align: right;
-      padding-right: 2%;
-
-      div {
-        top: 0;
-        right: 0;
-        display: inline;
-        cursor: pointer;
-      }
-    }
-
     display: grid;
     grid-template-columns: 0.5fr 4fr 0.5fr;
     grid-template-rows: 0.3fr 0.3fr;
     gap: 5px 5px;
+    height: 100%;
+    left: 50%;
+    overflow: auto;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+
+    &-close {
+      grid-column: 1 / 4 span;
+      padding-top: 20px;
+      padding-right: 2%;
+      text-align: right;
+
+      div {
+        cursor: pointer;
+        display: inline;
+        right: 0;
+        top: 0;
+      }
+    }
 
     &-photo {
       padding-top: 2vh;
 
       img {
-        max-width: 100%;
-        max-height: 500px;
-        object-fit: contain;
         border: 3px solid $clr-off-white;
         border-radius: 1.5px;
+        max-height: 500px;
+        max-width: 100%;
+        object-fit: contain;
       }
 
       &-photoDetails {
         padding: 3vh 6vh;
 
         p {
-          text-align: left;
-          font-size: 0.75em;
           color: $clr-off-white;
+          font-size: 0.75em;
+          text-align: left;
         }
       }
     }
@@ -68,8 +68,8 @@
     &-next,
     &-previous {
       cursor: pointer;
-      max-width: 100%;
       max-height: 600px;
+      max-width: 100%;
       object-fit: contain;
       padding-top: 35vh;
     }
@@ -77,8 +77,8 @@
     &-next > div,
     &-previous > div,
     &-close > div {
-      font-size: 1.5em;
       color: $clr-off-white;
+      font-size: 1.5em;
     }
 
     &-next:hover,

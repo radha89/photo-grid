@@ -1,12 +1,12 @@
 .header {
-  overflow: hidden;
   background-color: $clr-dark-grey;
+  height: auto;
+  overflow: hidden;
+  padding-bottom: 1vh;
+  padding-top: 0.5vh;
   position: fixed;
   top: 0px;
   width: 100%;
-  height: auto;
-  padding-top: 0.5vh;
-  padding-bottom: 1vh;
 
   &-title {
     font-family: $main-font;
